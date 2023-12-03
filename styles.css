@@ -47,7 +47,7 @@ h1 {
   outline-style: none;
   color: #241a1a;
   flex-grow: 1;
-  width: 25vh;
+  width: 45vh;
 }
 .form input [type="text"] {
   padding: 2px;

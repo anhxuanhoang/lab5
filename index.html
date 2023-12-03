@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Thông tin</title>
+  </head>
+  <body>
+    <div class="figma">
+      <img src="./image/scenario.png" alt="sceriano">
+      <a href="https://www.figma.com/file/VjUsARRcjS9CvN62fCgwYA/Untitled?type=design&mode=design&t=KeGwc1YYZ8lumnng-1" target="_blank">Link thiết kế</a>
+    </div>
+    <div id="wrapper">
+      <form action="" id="form_thongTin">
+        <h1>Hãy điền vào thông tin của bạn</h1>
+        <div class="form">
+          <input type="text" class="form-input" placeholder="Họ và Tên" />
+          <input type="text" class="form-input" placeholder="Số điện thoại" />
+          <input type="text" class="form-input" placeholder="Email" />
+          <select
+            class="form_select"
+            id="city"
+            aria-label=".form-select-sm"
+          >
+            <option value="" selected>Chọn tỉnh thành của bạn</option>
+          </select>
+          <button
+            type="button"
+            class="form_submit"
+            onclick="displaySuccessMessage()"
+          >
+            Đăng ký
+          </button>
+        </div>
+        <p id="success_mess" style="display: none">Đăng ký thành công</p>
+        <div id="searchModal" class="modal">
+          <span class="close" onclick="hideSearchModal()">&times;</span>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+        <script>
+          function displaySuccessMessage() {
+            document.getElementById("success_mess").style.display = "block";
+          }
+          function hideSearchModal() {
+            document.getElementById("wrapper").style.display = "none";
+          }
+          var citis = document.getElementById("city");
+          var Parameter = {
+            url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
+            method: "GET",
+            responseType: "application/json",
+          };
+          var promise = axios(Parameter);
+          promise.then(function (result) {
+            renderCity(result.data);
+          });
+
+          function renderCity(data) {
+            for (const x of data) {
+              citis.options[citis.options.length] = new Option(x.Name, x.Id);
+            }
+            citis.onchange = function () {
+              district.length = 1;
+              ward.length = 1;
+              if (this.value != "") {
+                const result = data.filter((n) => n.Id === this.value);
+
+                for (const k of result[0].Districts) {
+                  district.options[district.options.length] = new Option(
+                    k.Name,
+                    k.Id
+                  );
+                }
+              }
+            };
+          }
+        </script>
+      </form>
+    </div>
+  </body>
+</html>
